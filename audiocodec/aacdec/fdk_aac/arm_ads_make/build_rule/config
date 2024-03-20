@@ -1,0 +1,80 @@
+####################################################################
+# Telechips RVCT (2.2/3.1/4.0) Application configuration file
+####################################################################
+
+
+####################################################################
+# 1) ARM Architecture Version
+#
+#	ARMv5
+#	ARMv6
+#	ARMv7
+#
+#   Select ARM Architecture Version
+####################################################################
+ARM_VERSION = ARMv5
+
+####################################################################
+#
+# 2) Codec Name
+#
+#   Set library name, ex) CODEC_NAME = MP3DEC
+####################################################################
+CODEC_NAME = FDKAACDEC
+
+####################################################################
+#
+# 3) Library Version
+#
+#   Set library version
+####################################################################
+LIB_VERSION = 0.01.05.16
+
+####################################################################
+#
+# 4) RVCT Version
+#
+#   Select RVCT ( use Suite Switcher )
+####################################################################
+#OS_OR_COMPILER	= ADS12
+OS_OR_COMPILER	= GCC
+
+####################################################################
+#
+# 5) Library Name Setting
+# Library Name = (TARGET_BOARD)_(CODEC_NAME)_RVDS(TOOL_VER)_V(LIB_VERSION).a
+####################################################################
+LIB_NAME = libTCC_$(ARM_VERSION)_$(CODEC_NAME)_$(OS_OR_COMPILER)_V$(LIB_VERSION)
+
+
+####################################################################
+# 6) Target Setting 
+#
+#	ARM_VERSION 			= ARMv5 or ARMv6 or ARMv7
+#	CPU_TYPE    			= 5TE, arm926ej-s, arm1176jzf-s, Cortex-A8
+#	FPU_TYPE    			= none, SoftVFP, VFPv2
+#	PROTEC_NAME 			= Protection chip name
+#	USE_NEON_AUTO_VETORIZE 	= Y or N
+#   ALLOW_UNALIGNED_ACCESS 	= Y or N
+####################################################################
+
+#---------- ARMv5 ------------------
+ifeq ($(ARM_VERSION),ARMv5)
+CPU_TYPE		= arm926ej-s
+USE_VFP         = N
+endif
+
+#---------- ARMv6 ------------------
+ifeq ($(ARM_VERSION),ARMv6)
+CPU_TYPE		= arm1176jzf-s
+USE_VFP         = N
+endif
+
+#---------- ARMv7 ------------------
+ifeq ($(ARM_VERSION),ARMv7)
+CPU_TYPE		= Cortex-A8
+FPU_TYPE		= VFPv2
+USE_VFP         = Y
+USE_NEON_AUTO_VETORIZE	= Y
+ALLOW_UNALIGNED_ACCESS	= N
+endif

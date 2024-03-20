@@ -1,0 +1,72 @@
+#! /bin/bash
+#
+
+BUILD_MODE=$1
+
+function Usage() {
+	echo "Usage: $0"
+	echo
+	echo "Configuration:"
+	echo "-h, --help              Display this help and exit"
+	echo
+	echo "For better control, use the options below."
+	echo
+	echo "Optional features:"
+	echo "-d, --debug             Enable debug mode"
+	echo "-r, --release           Enable release mode"
+	echo " 1, --prebuilts         Local build"	
+	echo " 2, --download          Board Target build"		
+	exit 1
+}
+# File execute permission check
+#
+if [ ! -x configure ]; then
+	chmod +x configure
+fi
+
+build_example=""
+
+	case $BUILD_MODE in
+	-l | --library)
+		build_example=""
+		;;
+	-e | --example)
+		build_example="--enable-example"
+		;;
+	-h | --help)
+		Usage $@
+		;;
+	*)
+		echo "\"$BUILD_MODE\" is invalid argument!"
+		echo "Augument is either \"library\" or \"example\"."
+		invalid_args="true"
+		;;
+	esac
+#
+# Directory settings
+#
+current_dir=`pwd`
+include_dir=$(current_dir)/../../include
+#
+# Configure
+#
+chipname="tcc898x"
+#target_cflag="-mcpu=cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4 -fstack-usage"
+target_cflag="-mcpu=cortex-a7 -mfloat-abi=softfp -mfpu=neon-vfpv4"
+host_name="arm-none-linux-gnueabi"
+target_name="arm-none-linux-gnueabi"
+
+./configure \
+			--build=i686-pc-linux-gnu --host=arm-none-linux-gnueabi --target=arm-none-linux-gnueabi \
+            -prefix=${current_dir} \
+            ${build_example} \
+            CPPFLAGS="-I${current_dir}/../../include" \
+			CFLAGS="$target_cflag"
+
+if [ "$?" -ne 0 ]
+then
+           echo -en "\r\n\r\n"
+           echo -en "$FAILED: ... configure \n"
+           echo -en "\r\n\r\n"
+           exit 1
+fi

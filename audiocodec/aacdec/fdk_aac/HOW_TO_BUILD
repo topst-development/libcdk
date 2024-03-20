@@ -1,0 +1,8 @@
+< How to build only the FDK aac library. >
+
+$ cd cdk/audiocodec/aacdec/fdk_aac
+$ autoreconf -f -i
+$ ./tcc_build -l
+$ make
+$ make install
+$ ls -al ./lib

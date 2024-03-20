@@ -1,0 +1,147 @@
+
+Change Log (by Telechips)
+
+<ver V0.01.05.16 : 2019-11-28 : Telechips>
+    - add AAC Encoder wrapper code
+      TCAS_AAC_ENC.c
+
+<ver V0.01.05.15 : 2019-09-24 : Telechips>
+    - Modify ADTS checking code
+    - Chagne wrapper file from CPP to C.
+      TCAS_AAC_DEC.cpp -> TCAS_AAC_DEC.c
+      FDK_bitstream.h
+      tpdec_lib.cpp
+
+<ver V0.01.05.14 : 2018-11-09 : Telechips>
+    - Fixed a noise issue when there is a discontinuity in the stream (as seek).
+      TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.13 : 2018-10-17 : Telechips>
+    - Fixed the problem of not detecting ADTS in some files.
+      TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.12 : 2018-08-13 : Telechips>
+    - Discard the remaining data in the input buffer, 
+      if there is an error in decoding the headerless stream type.
+    - Ensure that the minimum size of the input is greater than 16 bits.
+      TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.11 : 2018-07-26 : Telechips>
+    - Fixed a problem that sometimes 2-channel downmix did not work.
+      TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.10 : 2018-07-23 : Telechips>
+    - Fix ADTS checking code bug
+      TCAS_AAC_DEC.cpp
+    - Replace calloc, malloc, free with FDKcalloc, FDKmalloc, FDKfree.
+      TCAS_AAC_DEC.cpp
+    - Apply code indentation
+      TCAS_AAC_DEC.cpp
+      tpdec_lib.cpp
+
+<ver V0.01.05.09 : 2018-07-19 : Telechips>
+    - Apply changes made on Android (CTS failure)
+      TCAS_AAC_DEC.cpp
+    - Add LOAS format checking code
+      TCAS_AAC_DEC.cpp
+    - Fix ADTS checking code bug
+      TCAS_AAC_DEC.cpp
+    - Fix memory leak
+      tpdec_lib.cpp (TCC code)
+
+    - Remove unused symbols
+      libSYS/src/genericStds.cpp
+
+<ver V0.01.05.08 : 2018-07-16 : Telechips>
+    - Reduce stack size for kernel mode
+      to enable add cflag below 
+      CFLAGS += -DKERNEL_MODE
+
+      * not supported for Encoder
+
+      libAACdec
+      libSBRdec
+      libFDK
+      libSYS
+      libAACenc
+      libSBRenc
+
+<ver V0.01.05.07 : 2018-04-23 : Telechips>
+    - Add codes to support 64bit os
+        TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.06 : 2018-01-02 : Telechips>
+    - Add codes to support 960 frame length
+        TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.05 : 2017-12-21 : Telechips>
+    - Add codes to get elements list found in the bitstream to detect the channel configuration of output PCM.
+      To determine the channel configuration of the output PCM, some codes were added to get a list of elements found in the bit stream.
+        libAACdec/src/aacdecoder.cpp
+        libAACdec/src/aacdecoder.h
+        libAACdec/include/aacdecoder_lib.h
+        TCAS_AAC_DEC.cpp
+
+    - Change AAC_PCM_LIMITER_ENABLE option's name and meaning in the TCC CDK wrapper
+      m_uiEnablePCMLimiter -> m_uiDisablePCMLimiter, see V0.01.05.03 below
+        TCAS_AAC_DEC.cpp
+        adec.h
+
+<ver V0.01.05.04 : 2017-12-21 : Telechips>
+    - Fix SBR multichannel noise  
+      I pushed this change to the original git : (https://github.com/mstorsjo/fdk-aac/commit/89aeea5f292306c429550e4c9fe55d865c903600)
+        libSBRdec/src/sbrdecoder.cpp
+
+    - Do not return error when error concealment was applied.
+      add code to inform the original audio factor, samplerate and number of channel, through the m_psAudiodecInput structure.
+        TCAS_AAC_DEC.cpp
+
+<ver V0.01.05.03 : 2017-12-15 : Telechips>
+    - ADD AAC_PCM_LIMITER_ENABLE option to CDK Wrapper code to switch the PCMLimiter block.
+      If you turn off this block on a low-performance CPU, you can get more clock.
+      You must update the adec.h to use this option.
+        TCAS_AAC_DEC.cpp
+        adec.h
+    
+
+<ver V0.01.05.02 : 2017-12-11 : Telechips>
+  - Don't return error when current combination of channel configuration and downmix settings are not know to produce a predictable behavior.
+        libAACdec\src\aacdecoder_lib.cpp
+
+<ver V0.01.05.01 : 2017-12-08 : Telechips>
+    - support non-interleaved pcm output (non-interleaved pcm mode does not work normally in original FDK-AAC code.)
+      it's not supported for multi-channel output. 
+        libAACdec\src\aacdecoder_lib.cpp
+        libAACdec\include\aacdecoder_lib.h
+
+<ver V0.01.05.00 : 2017-12-01 : Telechips>
+    - Even if the decoder has already been initialized for RAW type decoding mode, the decoder should decode the ADTS stream input.
+        libAACdec\src\aacdecoder_lib.cpp
+        libAACdec\include\aacdecoder_lib.h
+        libMpegTPDec\src\tpdec_lib.cpp
+        libMpegTPDec\include\tpdec_lib.h
+
+<ver V0.01.05.00b2 : 2017-11-30 : Telechips>
+    - ADD ADS 1.2 compiler supporting code.
+    - optimizations for ADS 1.2 ARMv5 core.
+		libFDK\include\arm\clz_arm.h
+		libFDK\include\arm\cplx_mul.h
+		libFDK\include\arm\fixmadd_arm.h
+		libFDK\include\arm\fixmul_arm.h
+		libFDK\include\common_fix.h
+		libFDK\src\arm\qmf_arm.cpp
+		libFDK\src\arm\dct_arm_ads.cpp
+		libFDK\src\dct.cpp
+
+  - Apply new commit of https://github.com/mstorsjo/fdk-aac.git/trunk
+    2017-11-20 : Avoid reading out of bounds due to too large aaIidIndexMapped
+ 
+<ver V0.01.05.00b1 : 2017-10-26 : Telechips>
+    - If there is data left in the buffer after decoding, do not handle it as an error if there are no other errors.
+	    libAACdec/src/aacdecoder.cpp
+
+<Base commit : FDK-AAC> 
+    https://github.com/mstorsjo/fdk-aac.git/trunk
+    - 2017-10-20 : Avoid reading out of bounds due to negative aaIccIndexMapped
+
+    v0.01.05     : see ChangeLog file

@@ -1,0 +1,1 @@
+@call axd -debug _FDKAACDEC_SIM_DEBUG.axf
